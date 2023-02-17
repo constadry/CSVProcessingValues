@@ -1,3 +1,5 @@
+using System.Globalization;
+using CsvHelper;
 using CSVProcessingValues.Models;
 using CSVProcessingValues.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +18,27 @@ public class ValuesController : ControllerBase
         _valueService = valueService;
     }
 
+    [HttpPost]
+    [Route("upload-file")]
+    public async Task<IActionResult> ParseCsvFile([FromForm] IFormFile? file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest("File is empty");
+
+        using var memoryStream = new MemoryStream(new byte[file.Length]);
+        await file.CopyToAsync(memoryStream);
+        memoryStream.Position = 0;
+
+        using var reader = new StreamReader(memoryStream);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        csv.Context.RegisterClassMap<ValueMap>();
+        var records = csv.GetRecords<Value>();
+
+        var result = await _valueService.SaveAll(file.FileName, records);
+        
+        return Ok(result);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetAllValues([FromQuery] ValueParameters valueParameters)
     {
@@ -25,18 +48,5 @@ public class ValuesController : ControllerBase
         var result = await _valueService.GetAll(valueParameters);
 
         return Ok(result);
-    }
-    
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetValue(string id)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
-
-        var result = await _valueService.Get(id);
-
-        if (!result.Success) return BadRequest(result.Message);
-
-        return Ok(result.Value);
     }
 }

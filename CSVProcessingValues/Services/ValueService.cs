@@ -21,60 +21,24 @@ public class ValueService : IValueService
         return _valueRepository.GetAll(valueParameters);
     }
 
-    public async Task<ValueResponse> Get(string id)
+    public async Task<ValueResponse> SaveAll(string fileName, IEnumerable<Value> values)
     {
         try
         {
-            var entity = await _valueRepository.Get(id);
+            values = values.Where(x =>
+                x.Indication >= 0 &&
+                x.Time >= 0 &&
+                x.StartDate <= DateTime.Now &&
+                x.StartDate >= DateTime.Parse("01.01.2000"))
+                .Take(10000);
+            foreach (var value in values) value.FileName = fileName;
+            await _valueRepository.SaveAll(values);
             await _unitOfWork.CompleteAsync();
-            return new ValueResponse(entity);
-        }
-        catch (CustomException ex)
-        {
-            return new ValueResponse($"An error occurred when finding the user: {ex.Message}");
-        }
-    }
-
-    public async Task<ValueResponse> Save(Value value)
-    {
-        try
-        {
-            var entity = await _valueRepository.Save(value);
-            await _unitOfWork.CompleteAsync();
-            return new ValueResponse(entity);
+            return new ValueResponse($"File {fileName} was added succesfully");
         }
         catch (CustomException ex)
         {
             return new ValueResponse($"An error occurred when saving the user: {ex.Message}");
-        }
-    }
-
-    public async Task<ValueResponse> Update(Value value)
-    {
-        try
-        {
-            var entity = await _valueRepository.Update(value);
-            await _unitOfWork.CompleteAsync();
-            return new ValueResponse(entity);
-        }
-        catch (CustomException ex)
-        {
-            return new ValueResponse($"An error occurred when updating the user: {ex.Message}");
-        }
-    }
-
-    public async Task<ValueResponse> Delete(string id)
-    {
-        try
-        {
-            var user = await _valueRepository.Get(id);
-            var entity = await _valueRepository.Delete(user);
-            await _unitOfWork.CompleteAsync();
-            return new ValueResponse(entity);
-        }
-        catch (CustomException ex)
-        {
-            return new ValueResponse($"An error occurred when removing the user: {ex.Message}");
         }
     }
 }

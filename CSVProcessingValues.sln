@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVProcessingValues", "CSVProcessingValues\CSVProcessingValues.csproj", "{17C8E4C0-1C3C-4851-B88E-D65BA77DC0C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVProcessingValues.Tests", "CSVProcessingValues.Tests\CSVProcessingValues.Tests.csproj", "{A1D74C48-2CE5-4F5F-A76D-45E597229665}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17C8E4C0-1C3C-4851-B88E-D65BA77DC0C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17C8E4C0-1C3C-4851-B88E-D65BA77DC0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17C8E4C0-1C3C-4851-B88E-D65BA77DC0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17C8E4C0-1C3C-4851-B88E-D65BA77DC0C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1D74C48-2CE5-4F5F-A76D-45E597229665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1D74C48-2CE5-4F5F-A76D-45E597229665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1D74C48-2CE5-4F5F-A76D-45E597229665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1D74C48-2CE5-4F5F-A76D-45E597229665}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

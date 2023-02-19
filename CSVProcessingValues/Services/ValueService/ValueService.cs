@@ -3,7 +3,7 @@ using CSVProcessingValues.Models;
 using CSVProcessingValues.Repositories;
 using CSVProcessingValues.Tools;
 
-namespace CSVProcessingValues.Services;
+namespace CSVProcessingValues.Services.ValueService;
 
 public class ValueService : IValueService
 {

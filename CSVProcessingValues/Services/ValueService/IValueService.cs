@@ -1,7 +1,7 @@
 using CSVProcessingValues.Communication;
 using CSVProcessingValues.Models;
 
-namespace CSVProcessingValues.Services;
+namespace CSVProcessingValues.Services.ValueService;
 
 public interface IValueService
 {

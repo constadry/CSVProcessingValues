@@ -19,7 +19,6 @@ public class ValueResponse : BaseResponse
         this(false, message, null)
     {
     }
-
-    //TODO: List
+    
     public List<Value>? Values { get; }
 }

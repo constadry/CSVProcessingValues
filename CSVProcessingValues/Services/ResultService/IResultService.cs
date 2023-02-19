@@ -2,6 +2,6 @@
 
 public interface IResultService
 {
-    void Execute();
+    void Execute(string fileName);
     int GetAllTime();
 }

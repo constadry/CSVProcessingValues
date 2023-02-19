@@ -3,6 +3,7 @@
 public class Result
 {
     public int Id { get; set; }
+    public string FileName { get; set; }
     /// <summary>
     /// Все время (максимальное значение времени минус минимальное значение времени)
     /// </summary>
@@ -13,7 +14,7 @@ public class Result
     /// </summary>
     public DateTime StartDate { get; set; }
 
-    public int AverageTime { get; set; }
+    public double AverageTime { get; set; }
     
     public double AverageIndication { get; set; }
     

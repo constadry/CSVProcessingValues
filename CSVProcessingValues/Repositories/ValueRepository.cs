@@ -15,12 +15,13 @@ public class ValueRepository : BaseRepository, IValueRepository
 
     public async Task<IEnumerable<Value>> GetAll(ValueParameters valueParameters)
     {
+        Debug.Assert(Context.Values != null, "Context.Values != null");
         return await Context.Values.ToListAsync();
     }
 
     public async Task SaveAll(IEnumerable<Value> values)
     {
-        Debug.Assert(Context.Values != null, "Context.Users != null");
-        await Context.Values.AddRangeAsync();
+        Debug.Assert(Context.Values != null, "Context.Values != null");
+        await Context.Values.AddRangeAsync(values);
     }
 }

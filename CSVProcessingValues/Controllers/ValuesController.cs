@@ -1,5 +1,6 @@
 using System.Globalization;
 using CsvHelper;
+using CsvHelper.Configuration;
 using CSVProcessingValues.Models;
 using CSVProcessingValues.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -29,8 +30,15 @@ public class ValuesController : ControllerBase
         await file.CopyToAsync(memoryStream);
         memoryStream.Position = 0;
 
+        var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            HasHeaderRecord = false,
+            Delimiter = ";"
+        };
+        
         using var reader = new StreamReader(memoryStream);
-        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        using var csv = new CsvReader(reader, configuration);
+        csv.Context.TypeConverterCache.AddConverter<DateTime>(new DateConverter());
         csv.Context.RegisterClassMap<ValueMap>();
         var records = csv.GetRecords<Value>();
 

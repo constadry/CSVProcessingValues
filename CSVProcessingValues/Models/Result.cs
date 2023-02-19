@@ -2,6 +2,7 @@
 
 public class Result
 {
+    public int Id { get; set; }
     /// <summary>
     /// Все время (максимальное значение времени минус минимальное значение времени)
     /// </summary>

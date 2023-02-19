@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,5 +23,11 @@ public class ValuesServiceTest
         var mockUnitOfWork = new Mock<IUnitOfWork>();
         _valueService = new ValueService(_mockRepository.Object, mockUnitOfWork.Object);
         _valueParams = new ValueParameters();
+    }
+
+    [Fact]
+    public void TestDateParsing()
+    {
+        var date = DateTime.Parse("2022-03-18 09:18:17");
     }
 }

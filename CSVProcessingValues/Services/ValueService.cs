@@ -26,11 +26,10 @@ public class ValueService : IValueService
         try
         {
             values = values.Where(x =>
-                x.Indication >= 0 &&
-                x.Time >= 0 &&
+                x is { Indication: >= 0, Time: >= 0 } &&
                 x.StartDate <= DateTime.Now &&
                 x.StartDate >= DateTime.Parse("01.01.2000"))
-                .Take(10000);
+                .Take(10000).ToList();
             foreach (var value in values) value.FileName = fileName;
             await _valueRepository.SaveAll(values);
             await _unitOfWork.CompleteAsync();

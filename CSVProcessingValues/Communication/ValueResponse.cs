@@ -20,5 +20,6 @@ public class ValueResponse : BaseResponse
     {
     }
 
+    //TODO: List
     public Value? Value { get; }
 }

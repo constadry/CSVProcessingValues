@@ -33,6 +33,4 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 
-// app.MapGet("/", () => "This is test task api app for tele2 company, wow!");
-
 app.Run();

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic;
 using Moq;
 using CSVProcessingValues.Models;
 using CSVProcessingValues.Repositories;
@@ -26,8 +21,8 @@ public class ValuesServiceTest
     }
 
     [Fact]
-    public void TestDateParsing()
+    public void TestAllTime()
     {
-        var date = DateTime.Parse("2022-03-18 09:18:17");
+        
     }
 }

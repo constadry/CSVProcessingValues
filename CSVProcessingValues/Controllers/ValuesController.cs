@@ -43,8 +43,9 @@ public class ValuesController : ControllerBase
         var records = csv.GetRecords<Value>();
 
         var result = await _valueService.SaveAll(file.FileName, records);
-        
-        return Ok(result);
+        if (result.Success)
+            return Ok(result.Values);
+        return BadRequest(result.Message);
     }
 
     [HttpGet]

@@ -33,7 +33,7 @@ public class ValueService : IValueService
             foreach (var value in values) value.FileName = fileName;
             await _valueRepository.SaveAll(values);
             await _unitOfWork.CompleteAsync();
-            return new ValueResponse($"File {fileName} was added succesfully");
+            return new ValueResponse(values.ToList());
         }
         catch (CustomException ex)
         {

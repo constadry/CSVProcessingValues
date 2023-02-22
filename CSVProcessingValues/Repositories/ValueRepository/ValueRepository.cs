@@ -3,7 +3,7 @@ using CSVProcessingValues.Contexts;
 using CSVProcessingValues.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSVProcessingValues.Repositories;
+namespace CSVProcessingValues.Repositories.ValueRepository;
 
 public class ValueRepository : BaseRepository, IValueRepository
 {

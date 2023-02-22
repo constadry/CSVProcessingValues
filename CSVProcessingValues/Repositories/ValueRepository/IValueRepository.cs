@@ -1,6 +1,6 @@
 using CSVProcessingValues.Models;
 
-namespace CSVProcessingValues.Repositories;
+namespace CSVProcessingValues.Repositories.ValueRepository;
 
 public interface IValueRepository
 {

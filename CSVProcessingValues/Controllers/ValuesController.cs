@@ -4,6 +4,7 @@ using CsvHelper.Configuration;
 using CSVProcessingValues.Models;
 using Microsoft.AspNetCore.Mvc;
 using CSVProcessingValues.Extensions;
+using CSVProcessingValues.Services.ResultService;
 using CSVProcessingValues.Services.ValueService;
 
 namespace CSVProcessingValues.Controllers;
@@ -14,9 +15,11 @@ namespace CSVProcessingValues.Controllers;
 public class ValuesController : ControllerBase
 {
     private readonly IValueService _valueService;
-    public ValuesController(IValueService valueService)
+    private readonly IResultService _resultService;
+    public ValuesController(IValueService valueService, IResultService resultService)
     {
         _valueService = valueService;
+        _resultService = resultService;
     }
 
     [HttpPost]
@@ -40,12 +43,14 @@ public class ValuesController : ControllerBase
         using var csv = new CsvReader(reader, configuration);
         csv.Context.TypeConverterCache.AddConverter<DateTime>(new DateConverter());
         csv.Context.RegisterClassMap<ValueMap>();
-        var records = csv.GetRecords<Value>();
+        var records = csv.GetRecords<Value>()?.ToList() ?? new List<Value>();
 
-        var result = await _valueService.SaveAll(file.FileName, records);
-        if (result.Success)
-            return Ok(result.Values);
-        return BadRequest(result.Message);
+        var resultValues = await _valueService.SaveAll(file.FileName, records);
+        await _resultService.ExecuteAsync(records.ToList(), file.FileName);
+        
+        if (resultValues.Success)
+            return Ok(resultValues.Values);
+        return BadRequest(resultValues.Message);
     }
 
     [HttpGet]

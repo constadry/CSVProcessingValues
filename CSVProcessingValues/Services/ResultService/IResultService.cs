@@ -1,7 +1,9 @@
-﻿namespace CSVProcessingValues.Services.ResultService;
+﻿using CSVProcessingValues.Models;
+
+namespace CSVProcessingValues.Services.ResultService;
 
 public interface IResultService
 {
-    void Execute(string fileName);
+    Task<Result> ExecuteAsync(List<Value> values, string fileName);
     int GetAllTime();
 }

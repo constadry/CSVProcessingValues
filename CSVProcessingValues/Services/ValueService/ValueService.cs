@@ -21,7 +21,7 @@ public class ValueService : IValueService
         return _valueRepository.GetAll(valueParameters);
     }
 
-    public async Task<ValueResponse> SaveAll(string fileName, IEnumerable<Value> values)
+    public async Task<ValueResponse> SaveAll(string fileName, List<Value> values)
     {
         try
         {

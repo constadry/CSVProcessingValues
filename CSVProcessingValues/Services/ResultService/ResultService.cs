@@ -10,26 +10,31 @@ public class ResultService : IResultService
     private List<Value> _values;
     private IResultRepository _resultRepository;
 
-    public ResultService(List<Value> values, IResultRepository resultRepository)
+    public ResultService(IResultRepository resultRepository)
     {
-        _values = values;
         _resultRepository = resultRepository;
     }
 
-    public void Execute(string fileName)
+    public async Task<Result> ExecuteAsync(List<Value> values, string fileName)
     {
-        _resultRepository.SaveAsync(
-            new Result
-            {
-                FileName = fileName,
-                Period = GetAllTime(),
-                StartDate = GetStartDateTime(),
-                AverageTime = GetAverageTime(),
-                AverageIndication = GetAverageIndicator(),
-                MedianIndication = GetMedianIndicator(),
-                ValuesCount = _values.Count,
-            }
-        );
+        return await _resultRepository.SaveAsync(GetResult(values, fileName));
+    }
+
+    public Result GetResult(List<Value> values, string fileName)
+    {
+        _values = values;
+        return new Result
+        {
+            FileName = fileName,
+            Period = GetAllTime(),
+            StartDate = GetStartDateTime(),
+            AverageTime = GetAverageTime(),
+            AverageIndication = GetAverageIndicator(),
+            MedianIndication = GetMedianIndicator(),
+            MinIndication = _values.MinBy(x => x.Indication).Indication,
+            MaxIndication = _values.MaxBy(x => x.Indication).Indication,
+            ValuesCount = _values.Count,
+        };
     }
 
     public int GetAllTime()

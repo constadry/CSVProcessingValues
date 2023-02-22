@@ -16,42 +16,28 @@ namespace CSVProcessingValues.Tests;
 public class ValuesServiceTest
 {
     [Theory, AutoMoqData]
-    public void TestAllTime([Frozen] Mock<IResultRepository> repository, List<Value> values)
+    public void TestResults([Frozen] Mock<IResultRepository> repository, List<Value> values)
     {
-        var resultService = new ResultService(values, repository.Object);
-        int expectedNumber = GetAllTime(values);
-        
-        var res = resultService.GetAllTime();
-        
-        Assert.Equal(expectedNumber, res);
-    }
+        var resultService = new ResultService(repository.Object);
+        var expectedResult = new Result
+        {
+            FileName = "test",
+            Period = GetAllTime(values),
+            StartDate = GetStartDateTime(values),
+            AverageTime = GetAverageTime(values),
+            AverageIndication = GetAverageIndicator(values),
+            MedianIndication = GetMedianIndicator(values),
+            MinIndication = values.MinBy(x => x.Indication).Indication,
+            MaxIndication = values.MaxBy(x => x.Indication).Indication,
+            ValuesCount = values.Count
+        };
 
-    [Theory, AutoMoqData]
-    public void TestStartTime([Frozen] Mock<IResultRepository> repository, List<Value> values)
-    {
-        var resultService = new ResultService(values, repository.Object);
-        var expectedDate = GetStartDateTime(values);
+        var actualResult = resultService.GetResult(values, "test");
         
-        var res = resultService.GetStartDateTime();
+        //Id doesn't matter for this test
+        expectedResult.Id = actualResult.Id;
         
-        Assert.Equal(expectedDate, res);
-    }
-    
-    [Theory, AutoMoqData]
-    public void TestAveragesAndMedian([Frozen] Mock<IResultRepository> repository, List<Value> values)
-    {
-        var resultService = new ResultService(values, repository.Object);
-        var expectedAverageTime = GetAverageTime(values);
-        var expectedAverageIndicator = GetAverageIndicator(values);
-        var expectedMedian = GetMedianIndicator(values);
-        
-        var time = resultService.GetAverageTime();
-        var indicator = resultService.GetAverageIndicator();
-        var median = resultService.GetMedianIndicator();
-        
-        Assert.Equal(expectedAverageTime, time);
-        Assert.Equal(expectedAverageIndicator, indicator);
-        Assert.Equal(expectedMedian, median);
+        Assert.Equivalent(expectedResult, actualResult);
     }
 
     private int GetAllTime(List<Value> values)

@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using CSVProcessingValues.Contexts;
 using CSVProcessingValues.Repositories;
+using CSVProcessingValues.Repositories.ResultRepository;
 using CSVProcessingValues.Services;
+using CSVProcessingValues.Services.ResultService;
 using CSVProcessingValues.Services.ValueService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IValueService, ValueService>();
 builder.Services.AddScoped<IValueRepository, ValueRepository>();
+builder.Services.AddScoped<IResultService, ResultService>();
+builder.Services.AddScoped<IResultRepository, ResultRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();

@@ -5,6 +5,6 @@ namespace CSVProcessingValues.Services.ValueService;
 
 public interface IValueService
 {
-    Task<IEnumerable<Value>> GetAll(ValueParameters valueParameters);
+    Task<ValueResponse> GetAll(string fileName);
     Task<ValueResponse> SaveAll(string fileName, List<Value> values);
 }

@@ -4,6 +4,6 @@ namespace CSVProcessingValues.Repositories.ValueRepository;
 
 public interface IValueRepository
 {
-    Task<IEnumerable<Value>> GetAll(ValueParameters valueParameters);  
+    Task<List<Value>> GetAll(string fileName);  
     Task SaveAll(IEnumerable<Value> values);
 }

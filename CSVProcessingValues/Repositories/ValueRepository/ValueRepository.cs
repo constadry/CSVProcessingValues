@@ -12,10 +12,10 @@ public class ValueRepository : BaseRepository, IValueRepository
     {
     }
 
-    public async Task<IEnumerable<Value>> GetAll(ValueParameters valueParameters)
+    public async Task<List<Value>> GetAll(string fileName)
     {
         Debug.Assert(Context.Values != null, "Context.Values != null");
-        return await Context.Values.ToListAsync();
+        return await Context.Values.Where(x => x.FileName == fileName).ToListAsync();
     }
 
     public async Task SaveAll(IEnumerable<Value> values)

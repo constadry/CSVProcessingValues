@@ -17,9 +17,18 @@ public class ValueService : IValueService
         _unitOfWork = unitOfWork;
     }
 
-    public Task<IEnumerable<Value>> GetAll(ValueParameters valueParameters)
+    public async Task<ValueResponse> GetAll(string fileName)
     {
-        return _valueRepository.GetAll(valueParameters);
+        try
+        {
+            var results = await _valueRepository.GetAll(fileName);
+            return new ValueResponse(results);
+        }
+        catch (CustomException ex)
+        {
+            return new ValueResponse($"An error occurred when saving the user: {ex.Message}");
+        }
+        
     }
 
     public async Task<ValueResponse> SaveAll(string fileName, List<Value> values)

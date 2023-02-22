@@ -29,9 +29,13 @@ public class ResultRepository : BaseRepository, IResultRepository
         }
     }
 
-    public async Task<List<Result>> GetAllAsync(string fileName)
+    public async Task<List<Result>> GetAllAsync(ResultParameters parameters)
     {
         Debug.Assert(Context.Results != null, "Context.Results != null");
-        return await Context.Results.Where(x => x.FileName == fileName).ToListAsync();
+        return await Context.Results.Where(
+            x => (x.StartDate >= parameters.StartDate || x.StartDate <= parameters.EndDate)
+            && (x.AverageTime >= parameters.AverageTimeMin || x.AverageTime <= parameters.AverageTimeMax)
+            && (x.AverageIndication >= parameters.AverageIndicationMin || x.AverageIndication <= parameters.AverageIndicationMax)
+            ).ToListAsync();
     }
 }

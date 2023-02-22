@@ -44,9 +44,10 @@ public class ValuesController : ControllerBase
         csv.Context.TypeConverterCache.AddConverter<DateTime>(new DateConverter());
         csv.Context.RegisterClassMap<ValueMap>();
         var records = csv.GetRecords<Value>()?.ToList() ?? new List<Value>();
-
-        var resultValues = await _valueService.SaveAll(file.FileName, records);
+        
         await _resultService.ExecuteAsync(records.ToList(), file.FileName);
+        
+        var resultValues = await _valueService.SaveAll(file.FileName, records);
         
         if (resultValues.Success)
             return Ok(resultValues.Values);
@@ -54,13 +55,27 @@ public class ValuesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllValues([FromQuery] ValueParameters valueParameters)
+    [Route("{fileName}")]
+    public async Task<IActionResult> GetAllValues(string fileName)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
             
-        var result = await _valueService.GetAll(valueParameters);
+        var result = await _valueService.GetAll(fileName);
 
         return Ok(result);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAllResults([FromQuery] ResultParameters resultParameters)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
+            
+        var result = await _resultService.GetAll(resultParameters);
+
+        if (result.Success)
+            return Ok(result.Values);
+        return BadRequest(result.Message);
     }
 }

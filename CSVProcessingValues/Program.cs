@@ -6,6 +6,7 @@ using CSVProcessingValues.Repositories.ResultRepository;
 using CSVProcessingValues.Repositories.ValueRepository;
 using CSVProcessingValues.Services;
 using CSVProcessingValues.Services.ResultService;
+using CSVProcessingValues.Services.ValidationService;
 using CSVProcessingValues.Services.ValueService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IValueService, ValueService>();
 builder.Services.AddScoped<IValueRepository, ValueRepository>();
 builder.Services.AddScoped<IResultService, ResultService>();
 builder.Services.AddScoped<IResultRepository, ResultRepository>();
+builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();

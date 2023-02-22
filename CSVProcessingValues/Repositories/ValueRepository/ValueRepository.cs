@@ -21,6 +21,13 @@ public class ValueRepository : BaseRepository, IValueRepository
     public async Task SaveAll(IEnumerable<Value> values)
     {
         Debug.Assert(Context.Values != null, "Context.Values != null");
+        var existFileValues = Context
+            .Values
+            .Where(
+                x => x
+                    .FileName == values.FirstOrDefault()
+                    .FileName);
+        Context.Values.RemoveRange(existFileValues);
         await Context.Values.AddRangeAsync(values);
     }
 }

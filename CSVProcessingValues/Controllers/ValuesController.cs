@@ -67,6 +67,7 @@ public class ValuesController : ControllerBase
     }
     
     [HttpGet]
+    [Route("results/query")]
     public async Task<IActionResult> GetAllResults([FromQuery] ResultParameters resultParameters)
     {
         if (!ModelState.IsValid)

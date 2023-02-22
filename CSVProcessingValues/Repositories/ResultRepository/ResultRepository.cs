@@ -26,9 +26,14 @@ public class ResultRepository : BaseRepository, IResultRepository
         }
         else
         {
-            result.Id = existFileResult.Id;
-            var response = Context.Results.Update(result);
-            return response.Entity;
+            existFileResult.Period = result.Period;
+            existFileResult.AverageIndication = result.AverageIndication;
+            existFileResult.AverageTime = result.AverageTime;
+            existFileResult.MaxIndication = result.MaxIndication;
+            existFileResult.MinIndication = result.MinIndication;
+            existFileResult.StartDate = result.StartDate;
+            existFileResult.ValuesCount = result.ValuesCount;
+            return existFileResult;
         }
     }
 

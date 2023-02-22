@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSVProcessingValues.Contexts;
 
-public sealed class AppDbContext : DbContext
+public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -12,6 +12,11 @@ public sealed class AppDbContext : DbContext
         Database.EnsureCreated();
     }
 
-    public DbSet<Value>? Values { get; set; }
-    public DbSet<Result>? Results { get; set; }
+    public AppDbContext()
+    {
+        
+    }
+    
+    public virtual DbSet<Value>? Values { get; set; }
+    public virtual DbSet<Result>? Results { get; set; }
 }

@@ -1,15 +1,18 @@
 ﻿using System.Diagnostics;
 using CSVProcessingValues.Contexts;
 using CSVProcessingValues.Models;
+using CSVProcessingValues.Services.ValidationService;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSVProcessingValues.Repositories.ResultRepository;
 
-public class ResultRepository : BaseRepository, IResultRepository 
+public class ResultRepository : BaseRepository, IResultRepository
 {
-    public ResultRepository(AppDbContext context)
+    private IValidationService _validationService;
+    public ResultRepository(AppDbContext context, IValidationService validationService)
         : base(context)
     {
+        _validationService = validationService;
     }
     
     public async Task<Result> SaveAsync(Result result)
@@ -32,10 +35,6 @@ public class ResultRepository : BaseRepository, IResultRepository
     public async Task<List<Result>> GetAllAsync(ResultParameters parameters)
     {
         Debug.Assert(Context.Results != null, "Context.Results != null");
-        return await Context.Results.Where(
-            x => (x.StartDate >= parameters.StartDate || x.StartDate <= parameters.EndDate)
-            && (x.AverageTime >= parameters.AverageTimeMin || x.AverageTime <= parameters.AverageTimeMax)
-            && (x.AverageIndication >= parameters.AverageIndicationMin || x.AverageIndication <= parameters.AverageIndicationMax)
-            ).ToListAsync();
+        return await _validationService.FilterResultsAsync(Context.Results, parameters);
     }
 }

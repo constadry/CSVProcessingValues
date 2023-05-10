@@ -44,11 +44,9 @@ public class ValuesController : ControllerBase
         csv.Context.TypeConverterCache.AddConverter<DateTime>(new DateConverter());
         csv.Context.RegisterClassMap<ValueMap>();
         var records = csv.GetRecords<Value>()?.ToList() ?? new List<Value>();
-        
         await _resultService.ExecuteAsync(records.ToList(), file.FileName);
         
         var resultValues = await _valueService.SaveAll(file.FileName, records);
-        
         if (resultValues.Success)
             return Ok(resultValues.Values);
         return BadRequest(resultValues.Message);

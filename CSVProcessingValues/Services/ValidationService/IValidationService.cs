@@ -6,4 +6,5 @@ namespace CSVProcessingValues.Services.ValidationService;
 public interface IValidationService
 {
     Task<List<Result>> FilterResultsAsync(DbSet<Result> results, ResultParameters parameters);
+    void CheckValidValues(List<Value> values);
 }

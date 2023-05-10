@@ -2,6 +2,7 @@ using CSVProcessingValues.Communication;
 using CSVProcessingValues.Models;
 using CSVProcessingValues.Repositories;
 using CSVProcessingValues.Repositories.ValueRepository;
+using CSVProcessingValues.Services.ValidationService;
 using CSVProcessingValues.Tools;
 
 namespace CSVProcessingValues.Services.ValueService;
@@ -10,11 +11,14 @@ public class ValueService : IValueService
 {
     private readonly IValueRepository _valueRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidationService _validationService;
+    
 
-    public ValueService(IValueRepository valueRepository, IUnitOfWork unitOfWork)
+    public ValueService(IValueRepository valueRepository, IUnitOfWork unitOfWork, IValidationService validationService)
     {
         _valueRepository = valueRepository;
         _unitOfWork = unitOfWork;
+        _validationService = validationService;
     }
 
     public async Task<ValueResponse> GetAll(string fileName)
@@ -35,11 +39,7 @@ public class ValueService : IValueService
     {
         try
         {
-            values = values.Where(x =>
-                x is { Indication: >= 0, Time: >= 0 } &&
-                x.StartDate <= DateTime.Now &&
-                x.StartDate >= DateTime.Parse("01.01.2000"))
-                .Take(10000).ToList();
+            _validationService.CheckValidValues(values);
             foreach (var value in values) value.FileName = fileName;
             await _valueRepository.SaveAll(values);
             await _unitOfWork.CompleteAsync();

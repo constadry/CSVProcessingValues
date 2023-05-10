@@ -43,7 +43,9 @@ public class ValuesController : ControllerBase
         using var csv = new CsvReader(reader, configuration);
         csv.Context.TypeConverterCache.AddConverter<DateTime>(new DateConverter());
         csv.Context.RegisterClassMap<ValueMap>();
+        
         var records = csv.GetRecords<Value>()?.ToList() ?? new List<Value>();
+        
         await _resultService.ExecuteAsync(records.ToList(), file.FileName);
         
         var resultValues = await _valueService.SaveAll(file.FileName, records);

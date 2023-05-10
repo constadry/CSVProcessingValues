@@ -46,11 +46,11 @@ public class ValuesController : ControllerBase
         var records = csv.GetRecords<Value>()?.ToList() ?? new List<Value>();
         
         await _resultService.ExecuteAsync(records.ToList(), file.FileName);
-        
         var resultValues = await _valueService.SaveAll(file.FileName, records);
         
         if (resultValues.Success)
             return Ok(resultValues.Values);
+        
         return BadRequest(resultValues.Message);
     }
 
